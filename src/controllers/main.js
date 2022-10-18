@@ -22,16 +22,20 @@ const mainController = {
   bookSearch: (req, res) => {
     res.render('search', { books: [] });
   },
-  bookSearchResult: (req, res) => {
-    // Implement search by title
+  bookSearchResult: (req, res) => { // Implement search by title
     res.render('search');
   },
-  deleteBook: (req, res) => {
-    // Implement delete book
+  deleteBook: (req, res) => { // Implement delete book
+
     db.Book.findByPk(req.params.id)
       .then(()=> 
       db.Book.destroy({ where: {id:req.params.id}, force:true})) //NO SE PUEDE ELIMINAR POR QUE ES UNA FK, PREGUNTARLE A LUQUI
-    res.render('home');
+    .catch(error => res.render(error))
+      return res.redirect('/')
+      //return res.redirect('/home'); en el caso que se quiera o...
+      //return res.redirect('/')
+      
+  
   },
   authors: (req, res) => {
     db.Author.findAll()
@@ -40,11 +44,10 @@ const mainController = {
       })
       .catch((error) => console.log(error));
   },
-  authorBooks: (req, res) => {
-    // Implement books by author
+  authorBooks: (req, res) => { // Implement books by author
     authorBooks: (req, res) => {
       db.Author.findByPk(req.params.id, {
-        include: [{ association: 'books' }] 
+        include: [{ association: 'books' }] //me salen duplicadosssss :(
       })
     
         .then((autor)  => {	
@@ -54,7 +57,7 @@ const mainController = {
     }
   },
   register: (req, res) => {
-   let author = req.body.author;
+   
   },
   processRegister: (req, res) => {
     db.User.create({
@@ -69,21 +72,54 @@ const mainController = {
       })
       .catch((error) => console.log(error));
   },
-  login: (req, res) => {
-    // Implement login process
+  login: (req, res) => { // Implement login process
     res.render('login');
   },
-  processLogin: (req, res) => {
-    // Implement login process
-    res.render('home');
+  processLogin: (req, res) => { // Implement login process
+  db.User.findOne({
+    where: {email: req.body.email}
+  }).then((usuario)=>{
+    if (usuario){
+      let passOk = bcryptjs.compareSync(req.body.password,usuario.Pass)
+      console.log(passOk)
+      if(passOk){
+        req.session.usuarioLogueado = usuario
+        delete usuario.password
+        res.cokkie("userEmail",req.body.email,{maxAge: 300 * 60 * 60})
+        res.redirect("/");
+      
+      }else{
+        return res.render("login",{
+          errors: {
+            datosIncorrectos: {
+              msg: "LAS CREDENCIALES SON INVÁLIDAS"
+            }
+          }
+        })
+      }
+    }else{
+      return res.render("login", {
+        errors: {
+          datosIncorrectos: {
+            msg: "LAS CREDENCIALES SON INVÁLIDAS"
+          }
+        }
+      })
+    }
+  })
+    //res.render('home');
+
   },
-  edit: (req, res) => {
-    // Implement edit book
+  edit: (req, res) => { // Implement edit book
     db.Book.findByPk(req.params.id)
     .then((then) => {
       return res.render('editBook',{books})
     })
-    
+    logout: (req,res) => {
+      req.clearCookie('email');
+      req.session.destroy();
+      return res.render("/");
+    }
   },
   processEdit: (req, res) => {
     // Implement edit book
@@ -109,4 +145,5 @@ const mainController = {
    
     })
   }
-}
+};
+module.exports = mainController;
