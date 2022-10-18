@@ -35,10 +35,18 @@ const mainController = {
   },
   authorBooks: (req, res) => {
     // Implement books by author
-    res.render('authorBooks');
+    authorBooks: (req, res) => {
+      db.Author.findByPk(req.params.id, {
+        include: [{ association: 'books' }] 
+      })
+    
+        .then((autor)  => {	
+          res.render('authorBooks', {autor} )
+        })
+    }
   },
   register: (req, res) => {
-    res.render('register');
+   let author = req.body.author;
   },
   processRegister: (req, res) => {
     db.User.create({
