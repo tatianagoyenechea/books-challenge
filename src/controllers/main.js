@@ -12,6 +12,7 @@ const mainController = {
       })
       .catch((error) => console.log(error));
   },
+
   bookDetail: (req, res) => {
     db.Book.findByPk(req.params.id,{include: [{ association: 'authors' }]})
     .then(book => {
@@ -19,14 +20,16 @@ const mainController = {
     })
     
   },
+
   bookSearch: (req, res) => {
     res.render('search', { books: [] });
   },
+
   bookSearchResult: (req, res) => { // Implement search by title
     res.render('search');
   },
-  deleteBook: (req, res) => { // Implement delete book
 
+  deleteBook: (req, res) => { // Implement delete book
     db.Book.findByPk(req.params.id)
       .then(()=> 
       db.Book.destroy({ where: {id:req.params.id}, force:true})) //NO SE PUEDE ELIMINAR POR QUE ES UNA FK, PREGUNTARLE A LUQUI
@@ -34,9 +37,8 @@ const mainController = {
       return res.redirect('/')
       //return res.redirect('/home'); en el caso que se quiera o...
       //return res.redirect('/')
-      
-  
   },
+
   authors: (req, res) => {
     db.Author.findAll()
       .then((authors) => {
@@ -44,6 +46,7 @@ const mainController = {
       })
       .catch((error) => console.log(error));
   },
+
   authorBooks: (req, res) => { // Implement books by author
     authorBooks: (req, res) => {
       db.Author.findByPk(req.params.id, {
@@ -56,9 +59,12 @@ const mainController = {
         })
     }
   },
+
   register: (req, res) => {
+    res.render('register');
    
   },
+
   processRegister: (req, res) => {
     db.User.create({
       Name: req.body.name,
@@ -72,9 +78,11 @@ const mainController = {
       })
       .catch((error) => console.log(error));
   },
+
   login: (req, res) => { // Implement login process
     res.render('login');
   },
+
   processLogin: (req, res) => { // Implement login process
   db.User.findOne({
     where: {email: req.body.email}
@@ -115,14 +123,14 @@ const mainController = {
     .then((then) => {
       return res.render('editBook',{books})
     })
+  },
     logout: (req,res) => {
       req.clearCookie('email');
       req.session.destroy();
       return res.render("/");
     }
-  },
-  processEdit: (req, res) => {
-    // Implement edit book
+  }
+  processEdit: (req, res) => { // Implement edit book
     const resultValidation = validationResult(req);
     let bookToEdit = db.Book.findByPk(req.params.id)
     .all([bookToEdit])
@@ -145,5 +153,5 @@ const mainController = {
    
     })
   }
-};
+
 module.exports = mainController;
