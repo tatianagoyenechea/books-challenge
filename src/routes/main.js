@@ -1,6 +1,8 @@
 const express = require('express');
 const mainController = require('../controllers/main');
 const router = express.Router();
+const validation = require('../middlewares/validation');
+const validationBooks = require('../middlewares/validationBooks');
 
 router.get('/', mainController.home);
 router.get('/books/detail/:id', mainController.bookDetail);
@@ -15,5 +17,7 @@ router.post('/users/login', mainController.processLogin);
 router.delete('/books/:id', mainController.deleteBook);
 router.get('/books/edit/:id', mainController.edit);
 router.put('/books/edit/:id', mainController.processEdit);
+router.put('/users/logout', mainController.logout);
+router.put('/books/edit/:id', validationBooks,mainController.processEdit);
 
 module.exports = router;
