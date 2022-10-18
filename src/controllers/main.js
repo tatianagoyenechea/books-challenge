@@ -5,6 +5,7 @@ const mainController = {
   home: (req, res) => {
     db.Book.findAll({
       include: [{ association: 'authors' }]
+
     })
       .then((books) => {
         res.render('home', { books });
@@ -42,6 +43,7 @@ const mainController = {
     
         .then((autor)  => {	
           res.render('authorBooks', {autor} )
+          
         })
     }
   },
