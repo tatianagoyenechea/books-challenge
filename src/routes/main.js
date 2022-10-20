@@ -15,6 +15,6 @@ router.post('/users/register', mainController.processRegister);
 router.get('/users/login', mainController.login);
 router.post('/users/login', mainController.processLogin);
 router.get('/users/logout',mainController.logout);
-
+router.get('/books/editBook/:id',mainController.edit);
 
 module.exports = router;

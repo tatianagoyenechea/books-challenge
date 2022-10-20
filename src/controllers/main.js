@@ -150,12 +150,42 @@ const mainController = {
     //res.render('home');
 
   },
-  edit: (req, res) => { // Implement edit book
+  edit: (req, res) => {
     db.Book.findByPk(req.params.id)
-    .then((books) => {
-      return res.render('editBook',{books})
+    .then((books) =>{
+    return res.render('editBook', {books})
+  })
+  
+},
+
+processEdit: (req, res) => {
+  const resultValidation = validationResult(req);
+  let bookToEdit=db.Book.findByPk(req.params.id)
+  Promise
+  .all([bookToEdit])
+  .then((bookToEdit)=> {
+    if (resultValidation.errors.length>0) {
+      res.render ('editBook', {bookToEdit, errors: resultValidation.mapped()})
+    console.log(resultValidation)
+  } else {
+    let books = {
+      title: req.body.title,
+      cover: req.body.cover,
+      description: req.body.description, 
+    }
+    db.Book.update(books, { where: { id: req.params.id } })	
+      .then(() => {
+        return res.redirect('/')
+        })		
+      }		
     })
-  },
+},
+  //edit: (req, res) => { // Implement edit book
+    //db.Book.findByPk(req.params.id)
+    //.then((books) => {
+     // return res.render(path.result(__dirname,'..',"views",'editBook',{books}))
+    //})
+ // },
   logout: (req,res) =>{
     req.session.destroy();
     res.cookie('email',null,{maxAge: -1});
