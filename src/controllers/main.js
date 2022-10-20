@@ -46,13 +46,19 @@ const mainController = {
  },
 
   deleteBook: (req, res) => { // Implement delete book
+   // let deleteBook = products.filter(producto =>{
+     // return producto.id != req.params.id;
+    
+    //fs.writeFileSync(productsFilePath, JSON.stringify(deleteBook,null,2));
+    //res.render("afterDelete")
+    //})
     db.Book.findByPk(req.params.id)
       .then(()=> 
       db.Book.update({estado1},{ where: {id:req.params.id}, force:true})) //NO SE PUEDE ELIMINAR POR QUE ES UNA FK, PREGUNTARLE A LUQUI
     .catch(error => res.render(error))
+    //return res.redirect('/')
+    //return res.redirect('/home'); en el caso que se quiera o...
       return res.redirect('/')
-      //return res.redirect('/home'); en el caso que se quiera o...
-      //return res.redirect('/')
   },
 
   authors: (req, res) => {

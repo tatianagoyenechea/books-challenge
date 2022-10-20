@@ -44,10 +44,10 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="password" name="password" class="form-control form-control-lg" >
-                  <%if (errors && errors.datosIncorrectos) { %>
-                    <div class="text-danger">
-                      <%= errors.datosIncorrectos.msg%>
+                  <input type="password" name="password" class="form-control form-control-lg">
+                  <%if (locals.errors && errors.datosIncorrectos){%>
+                  <div class="text-danger">
+                  <%=errors.datosIncorrectos.msg%>
                       </div>
                       <% } %>
                 </div>
