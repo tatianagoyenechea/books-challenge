@@ -1,3 +1,5 @@
+//const { INTEGER } = require("sequelize/types");
+
 module.exports = (sequelize, dataTypes) => {
   let alias = 'Book';
   let cols = {
@@ -16,7 +18,8 @@ module.exports = (sequelize, dataTypes) => {
     },
     description: {
       type: dataTypes.STRING
-    }
+    },
+    
   };
   let config = {
     tableName: 'books',

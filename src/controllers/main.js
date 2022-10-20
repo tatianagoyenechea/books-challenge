@@ -46,16 +46,17 @@ const mainController = {
  },
 
   deleteBook: (req, res) => { // Implement delete book
-   // let deleteBook = products.filter(producto =>{
-     // return producto.id != req.params.id;
+   let deleteBook = products.filter(producto =>{
+     return producto.id != req.params.id;
     
-    //fs.writeFileSync(productsFilePath, JSON.stringify(deleteBook,null,2));
-    //res.render("afterDelete")
-    //})
-    db.Book.findByPk(req.params.id)
-      .then(()=> 
-      db.Book.update({estado1},{ where: {id:req.params.id}, force:true})) //NO SE PUEDE ELIMINAR POR QUE ES UNA FK, PREGUNTARLE A LUQUI
-    .catch(error => res.render(error))
+    fs.writeFileSync(productsFilePath, JSON.stringify(deleteBook,null,2));
+    res.render("afterDelete")
+    })
+
+    //db.Book.findByPk(req.params.id)
+    //  .then(()=> 
+    //  db.Book.update({estado1},{ where: {id:req.params.id}, force:true})) //NO SE PUEDE ELIMINAR POR QUE ES UNA FK, PREGUNTARLE A LUQUI
+    //.catch(error => res.render(error))
     //return res.redirect('/')
     //return res.redirect('/home'); en el caso que se quiera o...
       return res.redirect('/')
@@ -87,9 +88,9 @@ const mainController = {
    
   },
   profile: (req,res) => {
-    console.log (req.cookies.userEmail);
+    
     return res.render ('userProfile',{
-      user: req.session.userLogged
+      User: req.session.userLogged
     });
   },
 
@@ -120,6 +121,7 @@ const mainController = {
     if (usuario){
       let passOk = bcryptjs.compareSync(req.body.password,usuario.Pass)
       console.log(passOk)
+      console.log(usuario)
       if(passOk){
         req.session.usuarioLogueado = usuario
         delete usuario.password
@@ -150,13 +152,14 @@ const mainController = {
   },
   edit: (req, res) => { // Implement edit book
     db.Book.findByPk(req.params.id)
-    .then((then) => {
+    .then((books) => {
       return res.render('editBook',{books})
     })
   },
-    logout: (req,res) => {
+  logout: (req,res) =>{
     req.session.destroy();
-      return res.redirect("/");
+    res.cookie('email',null,{maxAge: -1});
+    res.redirect('/')
     },
   }
 
