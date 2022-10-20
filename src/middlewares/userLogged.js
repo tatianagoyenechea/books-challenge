@@ -1,4 +1,4 @@
-const User = require ('../models/User');
+//const User = require ('../User');
 
 function userLogged (req,res, next){
     if (req.session.userLogged){
@@ -11,5 +11,11 @@ function userLogged (req,res, next){
     let userFromCokkie = User.findByField('email', emailInCookie);
     console.log(userFromCookie);
     next();
+
+
+    let userInDB = User.findByField('email',req.body.email);
+    return res.send(userInDB)
+    
 }
+
 module.exports = userLogged;

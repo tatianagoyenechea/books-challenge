@@ -83,7 +83,7 @@ const mainController = {
   profile: (req,res) => {
     console.log (req.cookies.userEmail);
     return res.render ('userProfile',{
-      user: req.sessiom.userLogged
+      user: req.session.userLogged
     });
   },
 
@@ -101,11 +101,12 @@ const mainController = {
       })
       .catch((error) => console.log(error));
   },
+  
 
   login: (req, res) => { // Implement login process
     res.render('login');
   },
-
+    
   processLogin: (req, res) => { // Implement login process
   db.User.findOne({
     where: {email: req.body.email}
@@ -116,7 +117,7 @@ const mainController = {
       if(passOk){
         req.session.usuarioLogueado = usuario
         delete usuario.password
-        res.cokkie("userEmail",req.body.email,{maxAge: 300 * 60 * 60})
+        res.cookie("userEmail",req.body.email,{maxAge: 300 * 60 * 60})
         res.redirect("/");
       
       }else{
@@ -150,8 +151,9 @@ const mainController = {
     logout: (req,res) => {
     req.session.destroy();
       return res.redirect("/");
-    }
+    },
   }
+
   processEdit: (req, res) => { // Implement edit book
     const resultValidation = validationResult(req);
     let bookToEdit = db.Book.findByPk(req.params.id)
