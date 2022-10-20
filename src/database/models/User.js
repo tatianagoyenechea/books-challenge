@@ -1,3 +1,9 @@
+// Guardar usuario en la db
+// Buscar al usuario que se quiere logear por su mail
+// Buscar a un usuario por su ID
+// Editar info
+
+
 module.exports = (sequelize, dataTypes) => {
   let alias = 'User';
   let cols = {
@@ -26,7 +32,7 @@ module.exports = (sequelize, dataTypes) => {
     tableName: 'Users',
     timestamps: false
   };
-
+ 
   const User = sequelize.define(alias, cols, config);
 
   User.associate = function (models) {
@@ -36,4 +42,6 @@ module.exports = (sequelize, dataTypes) => {
     })
   }
   return User;
+
+  
 };

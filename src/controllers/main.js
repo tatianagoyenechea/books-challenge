@@ -1,7 +1,7 @@
-//const bcryptjs = require('bcryptjs');
+const bcryptjs = require('bcryptjs');
 const db = require('../database/models');
 const {validationResult} = require('express-validation');
-//const e = require('express');
+const e = require('express');
 const mainController = {
   home: (req, res) => {
     db.Book.findAll({
@@ -80,6 +80,13 @@ const mainController = {
     res.render('register');
    
   },
+  profile: (req,res) => {
+    console.log (req.cookies.userEmail);
+    return res.render ('userProfile',{
+      user: req.sessiom.userLogged
+    });
+  },
+
 
   processRegister: (req, res) => {
     db.User.create({
@@ -141,9 +148,8 @@ const mainController = {
     })
   },
     logout: (req,res) => {
-      req.clearCookie('email');
-      req.session.destroy();
-      return res.render("/");
+    req.session.destroy();
+      return res.redirect("/");
     }
   }
   processEdit: (req, res) => { // Implement edit book

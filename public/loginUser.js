@@ -8,8 +8,7 @@ window.addEventListener("load",function(){
         let password = document.querySelector('#password');
         let email = document.querySelector('#email');
 
-
-
+       
 
         //VALIDATION EMAIL 
         if(!regexEmail.test(email.value)){
