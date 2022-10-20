@@ -1,6 +1,7 @@
-const bcryptjs = require('bcryptjs');
+//const bcryptjs = require('bcryptjs');
 const db = require('../database/models');
 const {validationResult} = require('express-validation');
+//const e = require('express');
 const mainController = {
   home: (req, res) => {
     db.Book.findAll({
@@ -23,16 +24,31 @@ const mainController = {
 
   bookSearch: (req, res) => {
     res.render('search', { books: [] });
+    db.Book.findAll()
+    .then((books) => {
+      res.render('search', { books });
+    })
   },
 
   bookSearchResult: (req, res) => { // Implement search by title
     res.render('search');
-  },
+    db.Book.findOne({where: {title: req.body.title}
+    .then (books => {
+      if (books != undefined) {
+        
+      }else {
+        res.redirect('search')
+
+      }
+
+    })
+  })
+ },
 
   deleteBook: (req, res) => { // Implement delete book
     db.Book.findByPk(req.params.id)
       .then(()=> 
-      db.Book.destroy({ where: {id:req.params.id}, force:true})) //NO SE PUEDE ELIMINAR POR QUE ES UNA FK, PREGUNTARLE A LUQUI
+      db.Book.update({estado1},{ where: {id:req.params.id}, force:true})) //NO SE PUEDE ELIMINAR POR QUE ES UNA FK, PREGUNTARLE A LUQUI
     .catch(error => res.render(error))
       return res.redirect('/')
       //return res.redirect('/home'); en el caso que se quiera o...
