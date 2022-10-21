@@ -19,11 +19,24 @@ module.exports = (sequelize, dataTypes) => {
     description: {
       type: dataTypes.STRING
     },
-    
+    deletedAt: {
+      type: dataTypes.DATE
+    },
+    createdAt: {
+      type: dataTypes.DATE
+    },
+    updatedAt: {
+      type: dataTypes.DATE
+    },
   };
   let config = {
     tableName: 'books',
-    timestamps: false
+    timestamps: false,
+    timestamps: true,
+    paranoid: true,
+    deletedAt: 'deletedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
   const Book = sequelize.define(alias, cols, config);
 

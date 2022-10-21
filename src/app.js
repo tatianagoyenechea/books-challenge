@@ -8,10 +8,10 @@ app.use(session({
    resave: false,
   saveUninitialized: false
   }))
-//const cookieParser = require('cookie-parser');
-//const methodOverride = require('method-override');
+const cookieParser = require('cookie-parser');
+const methodOverride = require('method-override');
 app.use(express.json());
-//app.use(methodOverride('_method'));
+app.use(methodOverride('_method'));
 
 //MIDDLEWARE USUARIO LOGEADO
 app.use(userLogged)

@@ -23,13 +23,14 @@
         </div>
       </form>
 
-      <% if(books.title != undefined||books.estado == 4) { %>
+      <% if(books.title != undefined) { %>
         <h1 class="display-5 fw-bold"> <%= books.title %></h1>
         <div class="col-lg-6 mx-auto">
           <img class="d-block mx-auto mb-4" src="<%= books.cover %>" alt="" width="172" height="257">
           <p class="lead mb-4 fw-bold">
           <p class="lead mb-4"><%= books.description %></p>
         <%} %>
+        <script src="/js/displayShop.js"></script>
 
     <div class="list-group">
       

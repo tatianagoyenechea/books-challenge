@@ -16,6 +16,7 @@
     <h1>Books Repository from <%= autor.name %> </h1>
       <div class="container">
         <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+          <%  if(book.estado == 2){ %>
           <% autor.books.forEach(function(book){ %>
             <div class="feature col">
               <div class="feature-icon bg-gradient">

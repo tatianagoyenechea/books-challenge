@@ -1,6 +1,6 @@
 const bcryptjs = require('bcryptjs');
 const db = require('../database/models');
-const {validationResult} = require('express-validation');
+const {validationResult} = require('express-validator');
 const e = require('express');
 const mainController = {
   home: (req, res) => {
@@ -23,19 +23,17 @@ const mainController = {
   },
 
   bookSearch: (req, res) => {
-    res.render('search', { books: [] });
     db.Book.findAll()
     .then((books) => {
       res.render('search', { books });
     })
-  },
-
+  }, 
   bookSearchResult: (req, res) => { // Implement search by title
-    res.render('search');
+    //res.render('search');
     db.Book.findOne({where: {title: req.body.title}
     .then (books => {
       if (books != undefined) {
-        
+        res.render('search',{books})
       }else {
         res.redirect('search')
 
@@ -46,12 +44,20 @@ const mainController = {
  },
 
   deleteBook: (req, res) => { // Implement delete book
-   let deleteBook = products.filter(producto =>{
-     return producto.id != req.params.id;
+   // db.Book.update({estado1},{ where: {id:req.params.id}, force:true})
+   // .then((result)=> {
+    //  return res.redirect('/')
+    //})
+    db.Book.destroy({where:{id:req.params.id}})
+        .then(resultado => {
+            res.redirect('/')
+        })
+  // let deleteBook = products.filter(producto =>{
+    // return producto.id != req.params.id;
     
-    fs.writeFileSync(productsFilePath, JSON.stringify(deleteBook,null,2));
-    res.render("afterDelete")
-    })
+    //fs.writeFileSync(productsFilePath, JSON.stringify(deleteBook,null,2));
+    //res.render("afterDelete")
+   // })
 
     //db.Book.findByPk(req.params.id)
     //  .then(()=> 
@@ -59,7 +65,7 @@ const mainController = {
     //.catch(error => res.render(error))
     //return res.redirect('/')
     //return res.redirect('/home'); en el caso que se quiera o...
-      return res.redirect('/')
+     
   },
 
   authors: (req, res) => {
@@ -163,7 +169,7 @@ processEdit: (req, res) => {
   .all([bookToEdit])
   .then((bookToEdit)=> {
     if (resultValidation.errors.length>0) {
-      res.render ('editBook', {bookToEdit, errors: resultValidation.mapped()})
+      res.render ('editBook', {books:bookToEdit, errors: resultValidation.mapped()})
     console.log(resultValidation)
   } else {
     let books = {

@@ -14,7 +14,7 @@ function userLogged (req,res, next){
     next();
     //let userInDB = User.findByField('email',req.body.email);
     //return res.send(userInDB)
-    
+    //let userInDB = db.User.findOne({where: { email: req.body.email }})
     
 }
 
