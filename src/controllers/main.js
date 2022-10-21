@@ -23,25 +23,22 @@ const mainController = {
   },
 
   bookSearch: (req, res) => {
+    
     db.Book.findAll()
     .then((books) => {
       res.render('search', { books });
+      
     })
   }, 
   bookSearchResult: (req, res) => { // Implement search by title
     //res.render('search');
-    db.Book.findOne({where: {title: req.body.title}
-    .then (books => {
-      if (books != undefined) {
-        res.render('search',{books})
-      }else {
-        res.redirect('search')
-
-      }
-
+    console.log(req.body.busqueda)
+    db.Book.findOne({where: {title: req.body.busqueda}})
+    .then(books =>{
+      res.render('search', { books });
     })
-  })
- },
+  }
+ ,
 
   deleteBook: (req, res) => { // Implement delete book
    // db.Book.update({estado1},{ where: {id:req.params.id}, force:true})
