@@ -71,16 +71,14 @@ const mainController = {
   },
 
   authorBooks: (req, res) => { // Implement books by author
-    authorBooks: (req, res) => {
-      db.Author.findByPk(req.params.id, {
-        include: [{ association: 'books' }] //me salen duplicadosssss :(
+     db.Author.findByPk(req.params.id, {
+        include: [{ association: 'books' }]
       })
     
         .then((autor)  => {	
           res.render('authorBooks', {autor} )
-
         })
-    }
+    
   },
 
   register: (req, res) => {

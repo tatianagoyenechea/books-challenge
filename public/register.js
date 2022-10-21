@@ -35,5 +35,40 @@ window.addEventListener("load",function(){
             email.classList.remove('is-valid');
         }
         //VALIDATION PASSWORD
-    })
-})
+        if (password.value.length < 8 ) {
+            errors.push('El campo pasword debe tener al menos 8 caracteres!');
+            password.classList.add('is-invalid');
+        }
+        else{
+            password.classList.add('is-valid');
+            password.classList.remove('is-invalid');
+        }
+
+        if (errors.length > 0) {
+            
+           Swal.fire({
+               icon: 'error',  
+               text: 'Revise los errores!',
+           })
+                       let ulErrors = document.querySelector('.errores');
+             ulErrors.classList.add('alert-warning')
+             ulErrors.innerHTML = ''
+            
+            for (let i = 0; i < errors.length; i++) {
+                ulErrors.innerHTML += `<li > ${errors[i]} </li>`
+            }
+        }
+        else{
+            Swal.fire({
+                icon: 'success',
+                text: 'Cambios realizados!',
+            })
+            .then( ()=> {
+                form.submit()
+            })
+        }
+        
+    }
+)})
+
+
